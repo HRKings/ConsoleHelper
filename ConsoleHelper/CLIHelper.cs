@@ -14,11 +14,15 @@ namespace ConsoleHelper
 
             Console.CursorVisible = false;
 
-            (int startX, int startY) = Console.GetCursorPosition();
+            //(int startX, int startY) = Console.GetCursorPosition();
+
+            int startY = Console.CursorTop;
+
+            //Console.WriteLine(Console.BufferHeight);
+            //Console.WriteLine(startY);
 
             do
             {
-                Console.SetCursorPosition(startX, startY);
                 for (int i = 0; i < options.Length; i++)
                 {
                     if (i == currentSelection)
@@ -33,6 +37,11 @@ namespace ConsoleHelper
 
                     Console.ResetColor();
                 }
+
+                Console.CursorTop = startY;
+
+                if (Console.BufferHeight <= startY + 1)
+                    Console.CursorTop = startY - options.Length;
 
                 key = Console.ReadKey(true).Key;
 
@@ -61,6 +70,11 @@ namespace ConsoleHelper
                 }
             } while (key != ConsoleKey.Enter);
 
+            if (Console.BufferHeight <= startY + 1)
+                Console.CursorTop = startY;
+            else
+                Console.CursorTop = startY + options.Length;
+
             Console.CursorVisible = true;
             Console.WriteLine();
 
@@ -77,13 +91,12 @@ namespace ConsoleHelper
 
             Console.CursorVisible = false;
 
-            (int startX, int startY) = Console.GetCursorPosition();
+            int startY = Console.CursorTop;
 
             int padding = ">>  *".Length;
 
             do
             {
-                Console.SetCursorPosition(startX, startY);
                 for (int i = 0; i < options.Length; i++)
                 {
                     if (result.Contains(i))
@@ -115,6 +128,11 @@ namespace ConsoleHelper
                     Console.ResetColor();
                 }
 
+                Console.CursorTop = startY;
+
+                if (Console.BufferHeight <= startY + 1)
+                    Console.CursorTop = startY - options.Length;
+
                 key = Console.ReadKey(true).Key;
 
                 switch (key)
@@ -145,6 +163,11 @@ namespace ConsoleHelper
             } while (key != ConsoleKey.Escape);
 
             Console.CursorVisible = true;
+
+            if (Console.BufferHeight <= startY + 1)
+                Console.CursorTop = startY;
+            else
+                Console.CursorTop = startY + options.Length;
 
             Console.WriteLine();
 
