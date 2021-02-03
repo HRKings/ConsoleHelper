@@ -35,14 +35,15 @@ namespace ConsoleHelper.Tests
         private static void MenuTests()
         {
             string[] options = { "option_1", "option_2", "option_3", "option_4", "option_5", "option_6" };
+            string[] descriptions = { "description_1", "description_2", "description_3", "description_4", "description_5", "description_6" };
 
-            int choice = CLIHelper.MenuChoice(true, options);
+            int choice = CLIHelper.MenuChoice(true, descriptions, options);
             if (choice != -1)
                 Console.WriteLine($"Your choice was: {options[choice]}");
 
             Console.WriteLine();
 
-            List<int> choices = CLIHelper.MultipleChoice(options);
+            List<int> choices = CLIHelper.MultipleChoice(descriptions, options);
             string result = string.Empty;
             foreach (int i in choices)
             {

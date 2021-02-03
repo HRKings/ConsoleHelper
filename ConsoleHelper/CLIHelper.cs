@@ -6,20 +6,13 @@ namespace ConsoleHelper
 {
     public static class CLIHelper
     {
-        public static int MenuChoice(bool canCancel, params string[] options)
+        public static int MenuChoice(bool canCancel, string[] descriptions = null, params string[] options)
         {
             int currentSelection = 0;
 
             ConsoleKey key;
 
             Console.CursorVisible = false;
-
-            //(int startX, int startY) = Console.GetCursorPosition();
-
-            int startY = Console.CursorTop;
-
-            //Console.WriteLine(Console.BufferHeight);
-            //Console.WriteLine(startY);
 
             do
             {
@@ -28,20 +21,19 @@ namespace ConsoleHelper
                     if (i == currentSelection)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine($">> {options[i]}");
+                        Console.WriteLine(descriptions is not null ? $">> {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                            : $">> {options[i]}".Substring(0, Console.BufferWidth - 2));
                     }
                     else
                     {
-                        Console.WriteLine($"   {options[i]}");
+                        Console.WriteLine(descriptions is not null ? $"   {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                            : $"   {options[i]}".Substring(0, Console.BufferWidth - 2));
                     }
 
                     Console.ResetColor();
                 }
 
-                Console.CursorTop = startY;
-
-                if (Console.BufferHeight <= startY + 1)
-                    Console.CursorTop = startY - options.Length;
+                Console.CursorTop -= options.Length;
 
                 key = Console.ReadKey(true).Key;
 
@@ -70,10 +62,7 @@ namespace ConsoleHelper
                 }
             } while (key != ConsoleKey.Enter);
 
-            if (Console.BufferHeight <= startY + 1)
-                Console.CursorTop = startY;
-            else
-                Console.CursorTop = startY + options.Length;
+            Console.CursorTop += options.Length;
 
             Console.CursorVisible = true;
             Console.WriteLine();
@@ -81,7 +70,7 @@ namespace ConsoleHelper
             return currentSelection;
         }
 
-        public static List<int> MultipleChoice(params string[] options)
+        public static List<int> MultipleChoice(string[] descriptions = null, params string[] options)
         {
             List<int> result = new();
 
@@ -90,8 +79,6 @@ namespace ConsoleHelper
             ConsoleKey key;
 
             Console.CursorVisible = false;
-
-            int startY = Console.CursorTop;
 
             int padding = ">>  *".Length;
 
@@ -104,12 +91,14 @@ namespace ConsoleHelper
                         if (i == currentSelection)
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine($">> {options[i]} *");
+                            Console.WriteLine(descriptions is not null ? $">> {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $">> {options[i]} *".Substring(0, Console.BufferWidth - 10));
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"   {options[i]} *");
+                            Console.WriteLine(descriptions is not null ? $"   {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]} *".Substring(0, Console.BufferWidth - 2));
                         }
                     }
                     else
@@ -117,21 +106,20 @@ namespace ConsoleHelper
                         if (i == currentSelection)
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine($">> {options[i]}".PadRight(options[i].Length + padding, ' '));
+                            Console.WriteLine(descriptions is not null ? $">> {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]} *".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2));
                         }
                         else
                         {
-                            Console.WriteLine($"   {options[i]}".PadRight(options[i].Length + padding, ' '));
+                            Console.WriteLine(descriptions is not null ? $"   {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]}".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2));
                         }
                     }
 
                     Console.ResetColor();
                 }
 
-                Console.CursorTop = startY;
-
-                if (Console.BufferHeight <= startY + 1)
-                    Console.CursorTop = startY - options.Length;
+                Console.CursorTop -= options.Length;
 
                 key = Console.ReadKey(true).Key;
 
@@ -164,10 +152,7 @@ namespace ConsoleHelper
 
             Console.CursorVisible = true;
 
-            if (Console.BufferHeight <= startY + 1)
-                Console.CursorTop = startY;
-            else
-                Console.CursorTop = startY + options.Length;
+            Console.CursorTop += options.Length;
 
             Console.WriteLine();
 
