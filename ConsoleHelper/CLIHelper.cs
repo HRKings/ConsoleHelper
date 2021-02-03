@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace ConsoleHelper
 {
     public static class CLIHelper
     {
-        public static int MenuChoice(bool canCancel, int optionsPerLine = 1, params string[] options)
+        public static int MenuChoice(bool canCancel, params string[] options)
         {
-            const int spacingPerLine = 14;
-
             int currentSelection = 0;
 
             ConsoleKey key;
@@ -20,14 +18,18 @@ namespace ConsoleHelper
 
             do
             {
+                Console.SetCursorPosition(startX, startY);
                 for (int i = 0; i < options.Length; i++)
                 {
-                    Console.SetCursorPosition(startX + (i % optionsPerLine) * spacingPerLine, startY + i / optionsPerLine);
-
                     if (i == currentSelection)
+                    {
                         Console.ForegroundColor = ConsoleColor.Blue;
-
-                    Console.Write(options[i]);
+                        Console.WriteLine($">> {options[i]}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"   {options[i]}");
+                    }
 
                     Console.ResetColor();
                 }
@@ -36,30 +38,20 @@ namespace ConsoleHelper
 
                 switch (key)
                 {
-                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.UpArrow:
                         {
-                            if (currentSelection % optionsPerLine > 0)
+                            if (currentSelection > 0)
                                 currentSelection--;
                             break;
                         }
-                    case ConsoleKey.RightArrow:
+
+                    case ConsoleKey.DownArrow:
                         {
-                            if (currentSelection % optionsPerLine < optionsPerLine - 1)
+                            if (currentSelection < options.Length - 1)
                                 currentSelection++;
                             break;
                         }
-                    case ConsoleKey.UpArrow:
-                        {
-                            if (currentSelection >= optionsPerLine)
-                                currentSelection -= optionsPerLine;
-                            break;
-                        }
-                    case ConsoleKey.DownArrow:
-                        {
-                            if (currentSelection + optionsPerLine < options.Length)
-                                currentSelection += optionsPerLine;
-                            break;
-                        }
+
                     case ConsoleKey.Escape:
                         {
                             if (canCancel)
@@ -75,10 +67,8 @@ namespace ConsoleHelper
             return currentSelection;
         }
 
-        public static List<int> MultipleChoice(int optionsPerLine = 1, params string[] options)
+        public static List<int> MultipleChoice(params string[] options)
         {
-            const int spacingPerLine = 14;
-
             List<int> result = new();
 
             int currentSelection = 0;
@@ -89,19 +79,38 @@ namespace ConsoleHelper
 
             (int startX, int startY) = Console.GetCursorPosition();
 
+            int padding = ">>  *".Length;
+
             do
             {
+                Console.SetCursorPosition(startX, startY);
                 for (int i = 0; i < options.Length; i++)
                 {
-                    Console.SetCursorPosition(startX + (i % optionsPerLine) * spacingPerLine, startY + i / optionsPerLine);
-
-                    if (i == currentSelection)
-                        Console.ForegroundColor = ConsoleColor.Blue;
-
                     if (result.Contains(i))
-                        Console.ForegroundColor = ConsoleColor.Green;
-
-                    Console.Write(options[i]);
+                    {
+                        if (i == currentSelection)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine($">> {options[i]} *");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"   {options[i]} *");
+                        }
+                    }
+                    else
+                    {
+                        if (i == currentSelection)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine($">> {options[i]}".PadRight(options[i].Length + padding, ' '));
+                        }
+                        else
+                        {
+                            Console.WriteLine($"   {options[i]}".PadRight(options[i].Length + padding, ' '));
+                        }
+                    }
 
                     Console.ResetColor();
                 }
@@ -110,31 +119,17 @@ namespace ConsoleHelper
 
                 switch (key)
                 {
-                    case ConsoleKey.LeftArrow:
-                        {
-                            if (currentSelection % optionsPerLine > 0)
-                                currentSelection--;
-                            break;
-                        }
-
-                    case ConsoleKey.RightArrow:
-                        {
-                            if (currentSelection % optionsPerLine < optionsPerLine - 1)
-                                currentSelection++;
-                            break;
-                        }
-
                     case ConsoleKey.UpArrow:
                         {
-                            if (currentSelection >= optionsPerLine)
-                                currentSelection -= optionsPerLine;
+                            if (currentSelection > 0)
+                                currentSelection--;
                             break;
                         }
 
                     case ConsoleKey.DownArrow:
                         {
-                            if (currentSelection + optionsPerLine < options.Length)
-                                currentSelection += optionsPerLine;
+                            if (currentSelection < options.Length - 1)
+                                currentSelection++;
                             break;
                         }
 
