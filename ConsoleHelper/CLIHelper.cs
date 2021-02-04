@@ -14,6 +14,8 @@ namespace ConsoleHelper
 
             Console.CursorVisible = false;
 
+            string lineToPrint = string.Empty;
+
             do
             {
                 for (int i = 0; i < options.Length; i++)
@@ -21,15 +23,16 @@ namespace ConsoleHelper
                     if (i == currentSelection)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine(descriptions is not null ? $">> {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                            : $">> {options[i]}".Substring(0, Console.BufferWidth - 2));
+                        lineToPrint = descriptions is not null ? $">> {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                            : $">> {options[i]}".Substring(0, Console.BufferWidth - 2);
                     }
                     else
                     {
-                        Console.WriteLine(descriptions is not null ? $"   {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                            : $"   {options[i]}".Substring(0, Console.BufferWidth - 2));
+                        lineToPrint = descriptions is not null ? $"   {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                            : $"   {options[i]}".Substring(0, Console.BufferWidth - 2);
                     }
 
+                    Console.WriteLine(lineToPrint);
                     Console.ResetColor();
                 }
 
