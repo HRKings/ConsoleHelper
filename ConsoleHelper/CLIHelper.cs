@@ -14,7 +14,7 @@ namespace ConsoleHelper
 
             Console.CursorVisible = false;
 
-            string lineToPrint = string.Empty;
+            string lineToWrite;
 
             do
             {
@@ -23,16 +23,16 @@ namespace ConsoleHelper
                     if (i == currentSelection)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
-                        lineToPrint = descriptions is not null ? $">> {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                        lineToWrite = descriptions is not null ? $">> {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
                             : $">> {options[i]}".Substring(0, Console.BufferWidth - 2);
                     }
                     else
                     {
-                        lineToPrint = descriptions is not null ? $"   {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                        lineToWrite = descriptions is not null ? $"   {options[i]} : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
                             : $"   {options[i]}".Substring(0, Console.BufferWidth - 2);
                     }
 
-                    Console.WriteLine(lineToPrint);
+                    Console.WriteLine(lineToWrite);
                     Console.ResetColor();
                 }
 
@@ -82,8 +82,8 @@ namespace ConsoleHelper
             ConsoleKey key;
 
             Console.CursorVisible = false;
-
             int padding = ">>  *".Length;
+            string lineToWrite;
 
             do
             {
@@ -94,14 +94,14 @@ namespace ConsoleHelper
                         if (i == currentSelection)
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine(descriptions is not null ? $">> {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                                : $">> {options[i]} *".Substring(0, Console.BufferWidth - 10));
+                            lineToWrite = descriptions is not null ? $">> {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $">> {options[i]} *".Substring(0, Console.BufferWidth - 10);
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(descriptions is not null ? $"   {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                                : $"   {options[i]} *".Substring(0, Console.BufferWidth - 2));
+                            lineToWrite = descriptions is not null ? $"   {options[i]} * : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]} *".Substring(0, Console.BufferWidth - 2);
                         }
                     }
                     else
@@ -109,16 +109,17 @@ namespace ConsoleHelper
                         if (i == currentSelection)
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine(descriptions is not null ? $">> {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                                : $"   {options[i]} *".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2));
+                            lineToWrite = descriptions is not null ? $">> {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]} *".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2);
                         }
                         else
                         {
-                            Console.WriteLine(descriptions is not null ? $"   {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
-                                : $"   {options[i]}".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2));
+                            lineToWrite = descriptions is not null ? $"   {options[i]}   : {descriptions[i]}".Substring(0, Console.BufferWidth - 2)
+                                : $"   {options[i]}".PadRight(options[i].Length + padding, ' ').Substring(0, Console.BufferWidth - 2);
                         }
                     }
 
+                    Console.WriteLine(lineToWrite);
                     Console.ResetColor();
                 }
 
